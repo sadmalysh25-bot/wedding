@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Приглашение на свадьбу</title>
+<style>
+body {
+margin: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+background: #f0f4f8;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.container {
+text-align: center;
+max-width: 600px;
+width: 90%;
+}
+.image-area {
+margin-bottom: 20px;
+position: relative;
+}
+img {
+max-width: 100%;
+height: auto;
+display: block;
+border-radius: 12px;
+box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+/* Базовые стили кнопки-зоны (прозрачные, чёрная рамка) */
+.btn {
+cursor: pointer;
+padding: 16px 28px;
+font-size: 20px;
+font-weight: bold;
+background: transparent; /* Прозрачный фон вместо белого */
+border: 2px solid #000000; /* Чёрная граница */
+color: #ff6b6b;
+border-radius: 8px;
+transition: all 0.25s ease;
+user-select: none;
+display: inline-block;
+box-sizing: border-box;
+}
+.btn:hover {
+background: transparent; /* Остаётся прозрачным при наведении */
+color: #000000; /* Чёрный текст при наведении */
+transform: translateY(-2px);
+border-color: #000000; /* Сохраняем чёрную границу */
+}
+.btn:active {
+transform: translateY(0);
+}
+/* Позиционирование левой кнопки поверх картинки */
+#btn-left {
+position: absolute;
+top: 45.5%;
+left: 11%;
+width: 34%;
+text-align: left;
+max-width: 220px;
+}
+/* Позиционирование правой кнопки поверх картинки */
+#btn-right {
+position: absolute;
+top: 45.5%;
+left: 60%;
+width: 34%;
+text-align: right;
+max-width: 220px;
+}
+/* Кнопка «Назад» — прямоугольная, появляется только на второй картинке */
+#back-btn {
+cursor: pointer;
+padding: 12px 20px;
+font-size: 25px;
+font-weight: bold;
+background: transparent; /* Прозрачный фон вместо белого */
+border: 2px solid #000000; /* Чёрная граница */
+color: #333333;
+border-radius: 8px;
+transition: all 0.25s ease;
+user-select: none;
+display: none; /* Скрыта по умолчанию */
+margin-top: 16px;
+}
+#back-btn:hover {
+background: transparent; /* Прозрачная заливка при наведении */
+color: #000000; /* Чёрный текст при наведении */
+transform: translateY(-2px);
+border-color: #000000; /* Сохраняем чёрную границу */
+}
+#back-btn:active {
+transform: translateY(0);
+}
+/* Сообщение об ошибке, если картинка не загрузилась */
+#error-msg {
+display: none;
+text-align: center;
+color: #d32f2f;
+margin-top: 10px;
+font-size: 14px;
+background: #fff3cd;
+padding: 10px;
+border-radius: 8px;
+border: 1px solid #ffeeba;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<div class="image-area">
+<!-- Первая картинка (приглашение) -->
+<img id="invite-image" src="invite.png" alt="Приглашение на свадьбу" onerror="showError(this)">
+<div id="error-msg">
+Не удалось загрузить картинку <code>invite.png</code>. Положите файл в ту же папку, что и этот HTML, или замените <code>src="invite.png"</code> на прямую ссылку на ваше изображение.
+</div>
+
+<!-- Кнопки-зоны поверх картинки (видны только на первой картинке) -->
+<div class="btn" id="btn-left" onclick="switchImage()"></div>
+<div class="btn" id="btn-right" onclick="switchImage()"></div>
+</div>
+
+<!-- Кнопка «Назад» — появляется только на второй картинке -->
+<div id="back-btn" onclick="switchImageBack()">назад</div>
+</div>
+
+<script>
+const img = document.getElementById('invite-image');
+const btnLeft = document.getElementById('btn-left');
+const btnRight = document.getElementById('btn-right');
+const backBtn = document.getElementById('back-btn');
+
+function switchImage() {
+// Переключаем картинку
+if (img.src.includes('second-image.png')) {
+img.src = 'invite.png';
+} else {
+img.src = 'second-image.png';
+}
+updateUI();
+}
+
+function switchImageBack() {
+// Возвращаем первую картинку
+img.src = 'invite.png';
+updateUI();
+}
+
+function updateUI() {
+// Если в URL картинки есть 'second-image.png' — это вторая картинка
+if (img.src.includes('second-image.png')) {
+// Скрываем кнопки-зоны
+btnLeft.style.display = 'none';
+btnRight.style.display = 'none';
+// Показываем кнопку «Назад»
+backBtn.style.display = 'block';
+} else {
+// Показываем кнопки-зоны
+btnLeft.style.display = 'inline-block';
+btnRight.style.display = 'inline-block';
+// Скрываем кнопку «Назад»
+backBtn.style.display = 'none';
+}
+}
+
+function showError(element) {
+const msg = document.getElementById('error-msg');
+if (msg) msg.style.display = 'block';
+if (element) element.style.display = 'none';
+}
+</script>
+
+</body>
+</html>
